@@ -3,9 +3,17 @@
 
 ## Poster Results Results - v1 
 
+**x-y trajectory**
 
-<img src="media/x_" alt="testing" height="400" width="400">
+<img src="media/x_y_traj.png" alt="testing" height="400" width="400">
 
+**3D trajectory**
+
+<img src="media/full_traj.png" alt="testing" height="400" width="400">
+
+**XY over time**
+
+<img src="media/x_y_plot.png" alt="testing" height="400" width="400">
 
 
 

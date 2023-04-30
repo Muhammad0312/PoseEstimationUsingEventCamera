@@ -12,13 +12,13 @@ K = np.array([[285.78, 0, 181.13],
 dataset = 'poster_dataset'
 path = dataset+'/images.txt'
 # num_images = 100
-num_images = 1035
+num_images = 100
 homography_list = get_homography(dataset,path,num_images)
 
 print(homography_list)
 
 # # Compute and display trajectories
-plot_camera_trajectory(homography_list,K)
+# plot_camera_trajectory(homography_list,K)
 
 # create mosaic using homhgraphies
-# create_mosaic('poster_dataset/images/0.png',homography_list)
+create_mosaic('poster_dataset/images/0.png',homography_list)

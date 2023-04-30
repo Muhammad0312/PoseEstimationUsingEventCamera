@@ -1,7 +1,10 @@
 ﻿# Frontier Exploration - Hands-on Planning
 
+## Using SIFT
 
-## Poster Results Results - v1 
+
+
+## Using ORB
 
 **x-y trajectory**
 

@@ -1,45 +1,55 @@
 #!/usr/bin/python3
-import cv2
+
 import numpy as np
+import cv2
 
-def create_mosaic(ref_image,homographies):
+def show_warped_images(warped_img1,img2):
 
-    # Load reference image and homographies
-    ref_image = cv2.imread(ref_image)
+    # Show stitched image
+    warped_img1[0:img2.shape[0], 0:img2.shape[1]] = img2
+    cv2.namedWindow('Combined', cv2.WINDOW_NORMAL)
+    cv2.resizeWindow('Combined', 800, 600)
+    cv2.moveWindow('Combined', 1000, 100)
+    cv2.imshow('Combined', warped_img1)
 
-    # Compute cumulative homographies
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+def create_mosaic(homographies,num_images,path):
+
+    
     cumulative_homography = np.eye(3)
     cumulative_homographies = [cumulative_homography]
     for H in homographies:
-        cumulative_homography = np.dot(H, cumulative_homography)
+        cumulative_homography = np.dot(cumulative_homography,H)
         cumulative_homographies.append(cumulative_homography)
 
-    # Compute output size and offset
-    corners = np.array([[0, 0, 1], [0, ref_image.shape[0], 1], [ref_image.shape[1], ref_image.shape[0], 1], [ref_image.shape[1], 0, 1]])
-    corners = np.dot(corners, cumulative_homography.T)
-    corners[:, 0] /= corners[:, 2]
-    corners[:, 1] /= corners[:, 2]
-    min_x = int(np.floor(min(corners[:, 0])))
-    max_x = int(np.ceil(max(corners[:, 0])))
-    min_y = int(np.floor(min(corners[:, 1])))
-    max_y = int(np.ceil(max(corners[:, 1])))
-    output_size = (max_x - min_x, max_y - min_y)
-    offset = (-min_x, -min_y)
+    cumulative_homographies = np.array(cumulative_homographies)[1:]
+    print(cumulative_homographies.shape)
 
-    # Create output image and blend images
-    output_image = np.zeros((output_size[1], output_size[0], 3), dtype=np.uint8)
-    for i, H in enumerate(cumulative_homographies):
-        # Warp image
-        image = cv2.imread('poster_dataset/images/'+str(i)+'.png')
-        warped_image = cv2.warpPerspective(image, H, output_size)
+    img1 = cv2.imread(path + '0.png')
+
+    for i in range(1,num_images-1):
+        print(i)
+        img2  = cv2.imread(path + '100.png')
         
-        # Add to output image
-        if i == 0:
-            output_image[int(offset[1]):int(offset[1])+warped_image.shape[0], int(offset[0]):int(offset[0])+warped_image.shape[1], :] = warped_image
-        else:
-            overlap = (output_image[int(offset[1]):int(offset[1])+warped_image.shape[0], int(offset[0]):int(offset[0])+warped_image.shape[1], :] > 0).astype(np.int32)
-            output_image[int(offset[1]):int(offset[1])+warped_image.shape[0], int(offset[0]):int(offset[0])+warped_image.shape[1], :] *= overlap
-            warped_image *= overlap
-            output_image[int(offset[1]):int(offset[1])+warped_image.shape[0], int(offset[0]):int(offset[0])+warped_image.shape[1], :] += warped_image
+        # print(cumulative_homographies[i])
+        warped_img1 = cv2.warpPerspective(img1, cumulative_homographies[i-1], ((img1.shape[0] + img2.shape[0]), (img1.shape[1])))
+        warped_img1[0:img2.shape[0], 0:img2.shape[1]] = img2
+        
+        img1 = np.array(warped_img1)
 
-    return output_image
+    print(img1.shape)
+    img1 = img1[:1000,:1000,:]
+
+    cv2.namedWindow('Combined', cv2.WINDOW_NORMAL)
+    cv2.resizeWindow('Combined', 800, 600)
+    cv2.moveWindow('Combined', 1000, 100)
+    cv2.imshow('Combined', img1)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+
+    
+
+    # return np.array(homographies)

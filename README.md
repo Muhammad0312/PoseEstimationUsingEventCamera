@@ -5,7 +5,7 @@
 No change after rescaling the first homography matrix
 
 <img src="tv_poster/traj.png" alt="testing" height="400" width="400">
-<img src="poster_tv/x_y_plot.png" alt="testing" height="400" width="400">
+<img src="tv_poster/x_y_plot.png" alt="testing" height="400" width="400">
 
 # Underwater Poster
 

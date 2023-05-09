@@ -3,6 +3,8 @@
 import numpy as np
 import cv2
 
+from get_scale import *
+
 def draw_keypoints_on_img(img1,img2,kp1,kp2):
     img_kp = cv2.drawKeypoints(img1, kp1, None, flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
     img_kp1 = cv2.drawKeypoints(img2, kp2, None, flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
@@ -113,8 +115,11 @@ def get_homography(dataset,path,num_images,draw=False,scale=False):
             if len(src_pts) >= 4 and len(dst_pts) >= 4:               
                 M, _ = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, 1.0)
 
-                # if scale:
-                #     M = rescale_homography(M)
+                if scale:
+                    # give rescaling the destination image
+                    S = get_scale(image_path=dataset+'/'+imagePaths[i +  jump])
+                    # scale the homogrpahy matrix
+                    M = S @ M @ S.T
 
                 all_homographies.append(np.array(M))
 

@@ -11,7 +11,6 @@ import matplotlib.cm as cm
 def get_transform_from_homography(H, K):
     # Normalize homography matrix
     H = H / H[2, 2] #The reason for doing this is to make the homography matrix invariant to scale.
-    print('new H:', H)
     # Decompose homography into rotation and translation
     _, R_array, t_array, _ = cv2.decomposeHomographyMat(H, K)
 
@@ -22,7 +21,6 @@ def get_transform_from_homography(H, K):
 
     # Determine camera position
     if len(t_array) == 4:
-        print('t array: ', t_array)
         for i in range(4):
             t = t_array[i]
             if t[2] > 0:
@@ -77,12 +75,12 @@ def plot_camera_trajectory(homography_list,K):
     colors = np.linspace(0, 1, len(x_pos))
 
     # Plot the points in 2D space
-    fig, ax = plt.subplots()
-    ax.scatter(x_pos, y_pos, c=colors)
-    ax.set_xlabel('X Position')
-    ax.set_ylabel('Y Position')
-    ax.set_title('Robot Trajectory')
-    plt.show()
+    # fig, ax = plt.subplots()
+    # ax.scatter(x_pos, y_pos, c=colors)
+    # ax.set_xlabel('X Position')
+    # ax.set_ylabel('Y Position')
+    # ax.set_title('Robot Trajectory')
+    # plt.show()
 
     # Plot the points in 3D space with respect to time
     X_list = []
@@ -113,6 +111,12 @@ def plot_camera_trajectory(homography_list,K):
 
     # Create a color map with the same length as X_list, Y_list, and Z_list
     colors = np.linspace(0, 1, len(X_list))
+
+    X_list, Y_list, Z_list = np.array(X_list), np.array(Y_list), np.array(Z_list)
+
+    # X_list = (X_list + abs(min(X_list))) / (max(X_list) + abs(min(Y_list)))
+    # Y_list = (Y_list + abs(min(Y_list))) / (max(Y_list) + abs(min(Y_list)))
+    # Z_list = (Z_list + abs(min(Y_list))) / (max(Z_list) + abs(min(Y_list)))
 
     # plot the X, Y, and Z positions with respect to time
     T = np.arange(len(X_list))

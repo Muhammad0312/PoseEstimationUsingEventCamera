@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 from homo_decomposition import *
-from homo_generation import *
+from homo_generation2 import *
 # from create_mosaic import *
 
 # # underwater poster

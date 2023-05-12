@@ -2,6 +2,7 @@
 
 import numpy as np
 import cv2
+from get_scale import *
 
 def draw_keypoints_on_img(img1,img2,kp1,kp2):
     img_kp = cv2.drawKeypoints(img1, kp1, None, flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)

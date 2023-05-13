@@ -63,9 +63,6 @@ def get_camera_trajectory(H_list,K):
 
 
 def plot_camera_trajectory(homography_list):
-
-    # data = np.loadtxt("/content/groundtruth_far.txt")
-
     # x,y camera trajectory
     x_pos, y_pos, z_pos = get_camera_trajectory(homography_list)
     colors = np.linspace(0, 1, len(x_pos))

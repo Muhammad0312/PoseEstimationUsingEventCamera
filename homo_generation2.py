@@ -26,7 +26,7 @@ def show_matched_features(img_matches):
     cv2.imshow('Matched Features', img_matches)
     cv2.waitKey(0)
 
-def show_warped_images(warped_img1,img2):
+def show_warped_images(warped_img1,img1):
     cv2.namedWindow('Warped', cv2.WINDOW_NORMAL)
     cv2.resizeWindow('Warped', 800, 600)
     cv2.moveWindow('Warped', 1000, 100)
@@ -34,7 +34,7 @@ def show_warped_images(warped_img1,img2):
     cv2.waitKey(0)
 
     # Show stitched image
-    warped_img1[0:img2.shape[0], 0:img2.shape[1]] = img2
+    warped_img1[0:img1.shape[0], 0:img1.shape[1]] = img1
     cv2.namedWindow('Combined', cv2.WINDOW_NORMAL)
     cv2.resizeWindow('Combined', 800, 600)
     cv2.moveWindow('Combined', 1000, 100)
@@ -58,13 +58,14 @@ def get_camera_parameters(dataset):
 
     return calib_params
 
-'''
-dataset = name of the dataset as string
-num_images = positive value to process a specific number of images, negative value to process all
-'''
+
 
 
 def get_homography(dataset,num_images,draw=False,scale=False):
+    '''
+    dataset = name of the dataset as string
+    num_images = positive value to process a specific number of images, negative value to process all
+    '''
 
     path = dataset+'/images.txt'
     # list to append all image paths
@@ -170,18 +171,18 @@ def get_homography(dataset,num_images,draw=False,scale=False):
             src_pts = np.float32([kp1[m.queryIdx].pt for m in good_matches]).reshape(-1, 1, 2)
             dst_pts = np.float32([kp2[m.trainIdx].pt for m in good_matches]).reshape(-1, 1, 2)
             
-            if len(src_pts) >= 4 and len(dst_pts) >= 4:               
-                M, _ = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, 1.0)
+            if len(src_pts) >= 8 and len(dst_pts) >= 8:               
+                M, _ = cv2.findHomography(dst_pts, src_pts, cv2.RANSAC, 1.0)
 
                 # if scale:
                 #     M = rescale_homography(M)
 
                 all_homographies.append(np.array(M))
 
-                warped_img1 = cv2.warpPerspective(img1, M, ((img1.shape[0] + img2.shape[0]), (img1.shape[1])))
+                warped_img1 = cv2.warpPerspective(img2, M, ((img1.shape[0] + img2.shape[0]), (img1.shape[1])))
                 # # Show warped image only
                 if draw:
-                    show_warped_images(warped_img1,img2)
+                    show_warped_images(warped_img1, img1)
                 
             else:
                 print('Bro Give me more points')
@@ -190,31 +191,5 @@ def get_homography(dataset,num_images,draw=False,scale=False):
             print('Frame Skipped')
             print(imagePaths[i])
             print(imagePaths[i +  1])
-
-    # print(all_homographies)
-    
-
-    # with open(dataset+'/image_homographies.txt', 'w') as f:
-    #     f.write('[')
-    #     for item in range(0, len(all_homographies)):
-    #         f.write("%s" % all_homographies[item])
-    #         if item != len(all_homographies) - 1:
-    #             f.write(",\n")
-    #     f.write(']')
-
-    #     height, width = img2.shape[:2]
-    #     warped_img1 = cv2.warpPerspective(img1, M, (width, height))
-
-    #     panorama = cv2.addWeighted(warped_img1, 0.5, img2, 0.5, 0)
-
-        # Display result
-        # cv2.namedWindow('Panorama', cv2.WINDOW_NORMAL)
-
-        # # Set window size
-        # cv2.resizeWindow('Panorama', 800, 600)
-
-        # cv2.imshow('Panorama', panorama)
-        # cv2.waitKey(0)
-        # cv2.destroyAllWindows()
 
     return np.array(all_homographies)

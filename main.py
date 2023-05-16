@@ -46,13 +46,13 @@ homography_list = np.insert(homography_list, 0, wH1, axis=0)
 
 plot_camera_trajectory(homography_list, K)
 
-folder_name = 'event_files'
-filename = 'slider_close_timescaled.txt'
-path = folder_name + '/' +filename
+# folder_name = 'event_files'
+# filename = 'slider_close_timescaled.txt'
+# path = folder_name + '/' +filename
 
-frame_dict = FramesFromFeatures(path)
-all_homographies = HomographyEkltFeatures(frame_dict)
-plot_camera_trajectory(all_homographies, K)
+# frame_dict = FramesFromFeatures(path)
+# all_homographies = HomographyEkltFeatures(frame_dict)
+# plot_camera_trajectory(all_homographies, K)
 # get scale (first image, poster image)
 # wHp, pH1 =  get_scale('tv_poster/poster_gray.jpg', 'tv_poster/images/0.png', 350,710)
 

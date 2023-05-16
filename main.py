@@ -11,17 +11,21 @@ from homo_generation2 import *
 
 # TV poster
 K = np.array([[618.9265, 0, 179.2565],
-                  [0, 618.2467, 115.8944],
-                  [0, 0, 1]])
+              [0, 618.2467, 115.8944],
+              [0,    0,         1   ]])
 
 
 # # # Compute homographies first
 dataset = 'tv_poster'
 path = dataset+'/images.txt'
+
 # # # num_images = 1035 # Underwater poster
 # # # num_images = 1440 # TV poster
-num_images = 200
-homography_list = get_homography(dataset, num_images, draw=False)
+# num_images = 1035 # Underwater poster
+# num_images = 1440 # TV poster
+num_images = -1
+homography_list = get_homography(dataset,num_images,draw=False,scale = False)
+
 
 # # print(homography_list)
 

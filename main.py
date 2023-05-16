@@ -25,7 +25,7 @@ path = dataset+'/images.txt'
 # num_images = 1035 # Underwater poster
 # num_images = 1440 # TV poster
 num_images = -1
-homography_list = get_homography(dataset,num_images,draw=False,scale = False)
+homography_list = get_homography(dataset,num_images,draw=False)
 
 
 # # print(homography_list)

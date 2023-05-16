@@ -2,10 +2,13 @@
 
 # TV Poster
 
-No change after rescaling the first homography matrix
+**Unscaled**
 
-<img src="tv_poster/traj.png" alt="testing" height="400" width="400">
-<img src="tv_poster/x_y_plot.png" alt="testing" height="400" width="400">
+<img src="media/unscaled.jpeg" alt="testing" height="400">
+
+**Scaled**
+
+<img src="media/scaled.png" alt="testing" height="400">
 
 # Underwater Poster
 

@@ -61,7 +61,7 @@ def get_camera_parameters(dataset):
 
 
 
-def get_homography(dataset,num_images,draw=False,scale=False):
+def get_homography(dataset,num_images,draw=False):
     '''
     dataset = name of the dataset as string
     num_images = positive value to process a specific number of images, negative value to process all

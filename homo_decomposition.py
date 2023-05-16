@@ -15,8 +15,8 @@ def get_transform_from_homography(H, K, prev_T=None):
     if len(t_array)==1:
       R=R_array[0]
       t=t_array
-      print ("t_array",t_array)
-      print ("R_array",R_array)
+    #   print ("t_array",t_array)
+    #   print ("R_array",R_array)
     else:
       for i in range(4):
           t = t_array[i]
@@ -52,7 +52,7 @@ def get_camera_trajectory(H_list,K):
         trans_mat = get_transform_from_homography(np.array(H),K,camera_pose)
         # print ("trans_mat",trans_mat)
         # trans_mat=np.linalg. inv(trans_mat) 
-        camera_pose= camera_pose@ trans_mat
+        camera_pose= camera_pose @ trans_mat
         # print ("camera_pose",camera_pose)
         camera_traj = np.dot(camera_pose, np.array([0, 0, 0, 1]).reshape((4, 1)))
         x_pos.append(float(camera_traj[0]))
@@ -62,9 +62,9 @@ def get_camera_trajectory(H_list,K):
     return x_pos, y_pos,z_pos
 
 
-def plot_camera_trajectory(homography_list):
+def plot_camera_trajectory(homography_list, K):
     # x,y camera trajectory
-    x_pos, y_pos, z_pos = get_camera_trajectory(homography_list)
+    x_pos, y_pos, z_pos = get_camera_trajectory(homography_list, K)
     colors = np.linspace(0, 1, len(x_pos))
     fig, ax = plt.subplots(figsize=(8, 3))
     ax.scatter(x_pos, y_pos, c=colors)

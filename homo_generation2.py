@@ -59,8 +59,6 @@ def get_camera_parameters(dataset):
     return calib_params
 
 
-
-
 def get_homography(dataset,num_images,draw=False):
     '''
     dataset = name of the dataset as string

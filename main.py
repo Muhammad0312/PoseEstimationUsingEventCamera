@@ -3,6 +3,7 @@
 from homo_decomposition import *
 from homo_generation2 import *
 # from create_mosaic import *
+from homography_eklt import *
 
 # # underwater poster
 # K = np.array([[285.78, 0, 181.13],
@@ -43,9 +44,15 @@ print(wH1)
 homography_list = np.insert(homography_list, 0, wH1, axis=0)
 # homography list = [wHp pH1 1H2 2H3 3H4 ...]
 
-plot_camera_trajectory(homography_list,K)
+plot_camera_trajectory(homography_list, K)
 
+folder_name = 'event_files'
+filename = 'slider_close_timescaled.txt'
+path = folder_name + '/' +filename
 
+frame_dict = FramesFromFeatures(path)
+all_homographies = HomographyEkltFeatures(frame_dict)
+plot_camera_trajectory(all_homographies, K)
 # get scale (first image, poster image)
 # wHp, pH1 =  get_scale('tv_poster/poster_gray.jpg', 'tv_poster/images/0.png', 350,710)
 

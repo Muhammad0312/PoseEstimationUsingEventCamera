@@ -3,6 +3,32 @@
 import numpy as np
 import cv2
 
+def custom_perspective_transform(img, homography):
+    """Custom implementation of perspective transform
+    """
+    height, width, _ = img.shape
+    x = np.arange(width)
+    y = np.arange(height)
+
+    grid_x, grid_y = np.meshgrid(x, y)
+
+
+    grid = np.stack((grid_y, grid_x), axis=2)
+
+    transformed_grid = np.matmul(grid.reshape(-1, 2), homography).reshape((height, width, 2))
+    transformed_grid = np.around(transformed_grid).astype(int)
+
+    map_x = transformed_grid[:,:,1]
+    map_x = np.where(map_x >= width, width-1, map_x)
+    map_x = np.where(map_x < 0, 0, map_x)
+
+    map_y = transformed_grid[:,:,0]
+    map_y = np.where(map_y >= height, height-1, map_y)
+    map_y = np.where(map_y < 0, 0, map_y)
+
+    transformed_img = img[map_y, map_x]
+    return transformed_img
+
 def draw_keypoints_on_img(img1,img2,kp1,kp2):
     img_kp = cv2.drawKeypoints(img1, kp1, None, flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
     img_kp1 = cv2.drawKeypoints(img2, kp2, None, flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
@@ -62,6 +88,8 @@ def get_scale(poster_path, image_path ,poster_len,poster_width,draw=True):
     wHp = np.diag([sx,sy,1])
 
     # print(wHp)
+
+    # print(wHp)
     
     # Detect features and compute descriptors
     kp1, desc1 = sift.detectAndCompute(poster_gray, None)
@@ -103,15 +131,18 @@ def get_scale(poster_path, image_path ,poster_len,poster_width,draw=True):
     warped_img1 = cv2.warpPerspective(img1, pH1, ((poster.shape[1]), (poster.shape[0])))
     
     # Show warped image only
-    if draw:
-        show_warped_images(warped_img1, poster)
-
-    return np.array(wHp), np.array(pH1)
-
-    # warped_img1 = cv2.warpPerspective(img1, M, ((poster.shape[1]), (poster.shape[0])))
-    # #     # # Show warped image only
     # if draw:
     #     show_warped_images(warped_img1, poster)
 
+    h, w = img1.shape[:2]
+    corners = np.array([[0, 0], [0, h-1], [w-1, h-1], [w-1, 0]], dtype=np.float32)
+    wrapped_corners = cv2.perspectiveTransform(corners.reshape(-1, 1, 2), pH1).reshape(-1, 2)
 
-# print('S ',get_scale(image_path='poster_dataset/poster_half_vert.jpg'))
+    return np.array(wHp), np.array(pH1), wrapped_corners
+
+
+wHp, pH1, wrapped_corners = get_scale('tv_poster/poster_gray.jpg', 'tv_poster/images/0.png', 96,168.5,True)
+
+print('wHp: ', wHp)
+print('pH1: ', pH1)
+print('wrapped_corners: ', wrapped_corners)

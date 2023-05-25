@@ -3,7 +3,7 @@ import json
 import cv2
 
 
-def FramesFromFeatures(path):
+def FramesFromFeatures(path, time_diff):
     #[Feature_id, Time, x_coordinate, y_coordinate]
 
     #List to store all the features read from the text file
@@ -26,7 +26,7 @@ def FramesFromFeatures(path):
 
 
     #Time difference for each frame
-    diff = 0.01
+    diff = time_diff
     start_time = features[0][1]
     end_time = start_time + diff
     frame_num = 1

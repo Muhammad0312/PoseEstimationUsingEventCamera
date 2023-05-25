@@ -49,8 +49,8 @@ plot_camera_trajectory(homography_list, K)
 # folder_name = 'event_files'
 # filename = 'slider_close_timescaled.txt'
 # path = folder_name + '/' +filename
-
-# frame_dict = FramesFromFeatures(path)
+# time_diff = 0.01
+# frame_dict = FramesFromFeatures(path, time_diff)
 # all_homographies = HomographyEkltFeatures(frame_dict)
 # plot_camera_trajectory(all_homographies, K)
 # get scale (first image, poster image)

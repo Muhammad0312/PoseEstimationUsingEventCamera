@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import cv2
 import matplotlib.cm as cm
+from mpl_toolkits.mplot3d import Axes3D
 
 def get_transform_from_homography(H, K, prev_T=None):
     H = H / H[2, 2] #The reason for doing this is to make the homography matrix invariant to scale.

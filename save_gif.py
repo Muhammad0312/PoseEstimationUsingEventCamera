@@ -38,5 +38,5 @@ def create_gif(directory, gif_path, fps=10, resize=(320, 240)):
 
 # Example usage
 image_directory = 'tv_poster/images'
-output_gif_path = 'tv_poster/input_images.gif'
-create_gif(image_directory, output_gif_path, fps=50, resize=(600, 300))
+output_gif_path = 'tv_poster/input_images_tv_poster.gif'
+create_gif(image_directory, output_gif_path, fps=200, resize=(600, 300))

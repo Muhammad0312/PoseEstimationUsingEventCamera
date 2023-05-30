@@ -15,6 +15,10 @@ K = np.array([[618.9265, 0, 179.2565],
               [0, 618.2467, 115.8944],
               [0,    0,         1   ]])
 
+#close_slider
+
+# K = np.array([[335.419462958,0,129.924663379],[0,335.352935612,99.1864303447],[0,0,1]])
+
 
 # # # Compute homographies first
 dataset = 'tv_poster'
@@ -24,7 +28,7 @@ path = dataset+'/images.txt'
 # # # num_images = 1440 # TV poster
 # num_images = 1035 # Underwater poster
 # num_images = 1440 # TV poster
-num_images = -1
+num_images =400
 homography_list = get_homography(dataset,num_images,draw=False)
 
 
@@ -32,17 +36,17 @@ homography_list = get_homography(dataset,num_images,draw=False)
 
 homography_list = np.array(homography_list)
 
-# homography list = [1H2 2H3 3H4 ...]
+# # homography list = [1H2 2H3 3H4 ...]
 
-wHp, pH1 =  get_scale('tv_poster/poster_gray.jpg', 'tv_poster/images/0.png', 350,710,False)
-# wHp, pH1 =  get_scale('tv_poster/poster_gray.jpg', 'tv_poster/poster_half_horz.jpg', 3.50,7.10,False)
+# wHp, pH1 =  get_scale('tv_poster/poster_gray.jpg', 'tv_poster/images/0.png', 350,710,False)
+# # wHp, pH1 =  get_scale('tv_poster/poster_gray.jpg', 'tv_poster/poster_half_horz.jpg', 3.50,7.10,False)
 
-wH1 = wHp @ pH1
-print(wHp, pH1)
-print(wH1)
+# wH1 = wHp @ pH1
+# print(wHp, pH1)
+# print(wH1)
 
-homography_list = np.insert(homography_list, 0, wH1, axis=0)
-# homography list = [wHp pH1 1H2 2H3 3H4 ...]
+# homography_list = np.insert(homography_list, 0, wH1, axis=0)
+# # homography list = [wHp pH1 1H2 2H3 3H4 ...]
 
 plot_camera_trajectory(homography_list, K)
 
